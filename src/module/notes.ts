@@ -11,6 +11,7 @@ enum ActionTypes {
 
 export const fetchItemsRequest = () => {
   return async (dispatch: Dispatch) => {
+    dispatch(startFetch());
     const notes = await storage.note.getAll();
     dispatch(fetchItemsSuccess(notes));
   };
@@ -52,7 +53,8 @@ export default (state: StateType = defaultState, action: Actions): StateType => 
     case ActionTypes.FETCH_ITEMS_SUCCESS:
       return {
         ...state,
-        items: action.payload
+        items: action.payload,
+        isFetching: false
       };
     default:
       return state;
