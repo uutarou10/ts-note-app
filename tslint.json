@@ -8,7 +8,7 @@
     ]
   },
   "rules": {
-    "variable-name": [true, "allow-leading-underscore"],
+    "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
     "interface-name": [true, "never-prefix"],
     "object-literal-sort-keys" : false
   }
