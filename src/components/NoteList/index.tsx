@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Note from '../../model/note';
 
 interface PropTypes {
@@ -11,7 +12,7 @@ const NoteList: React.SFC<PropTypes> = ({ notes }) => {
       <ul>
         {notes.map(note => (
           <li key={note.id}>
-            {note.title}<br />
+            <Link to={`/notes/${note.id}`}>{note.title}</Link><br />
             {note.body}
           </li>
         ))}

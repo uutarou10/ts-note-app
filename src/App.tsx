@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import NoteList from './components/NoteList';
 import Note from './model/note';
 import { RootState } from './module';
 import { fetchItemsRequest } from './module/notes';
+import NoteView from './screens/NoteView';
 
 interface PropTypes {
   dispatch: (action: any) => any,
@@ -18,12 +20,24 @@ class App extends React.Component<PropTypes> {
 
   public render() {
     return (
-      <div className="App">
-        {this.props.isFetching ? <p>Loading...</p> : <NoteList notes={this.props.notes} />}
-      </div>
+      <Router>
+        <div>
+          <div>
+            {this.props.isFetching ? <p>Loading...</p> : <NoteList notes={this.props.notes} />}
+          </div>
+          <div>
+            <Route exact={true} path='/' component={IndexComponent} />
+            <Route path='/notes/:id' component={NoteView} />
+          </div>
+        </div>
+      </Router>
     );
   }
 }
+
+const IndexComponent = () => (
+  <p>Please select note</p>
+);
 
 const mapStateToProps = (state: RootState) => {
   return {
