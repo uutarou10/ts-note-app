@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Note from '../../model/note';
 import { RootState } from '../../module';
 
 interface PropTypes {
+  notes: Note[],
   match: {
     params: {
       id: string
     }
-  },
-  notes: Note[]
+  }
 }
 
-const NoteView: React.SFC<PropTypes> = (props) => {
+const NoteEditView: React.SFC<PropTypes> = (props) => {
   const noteId = props.match.params.id;
   const selectedNote = props.notes.find(note => note.id === noteId);
 
@@ -21,12 +20,13 @@ const NoteView: React.SFC<PropTypes> = (props) => {
     <div>
       {selectedNote ? (
         <div>
-          <h2>{selectedNote.title}</h2>
-          <Link to={`/notes/${selectedNote.id}/edit`}>Edit</Link>
-          <p>{selectedNote.body}</p>
+          <input type='text' value={selectedNote.title} />
+          <textarea value={selectedNote.body} />
+          <button>save</button>
+          <button>delete this note</button>
         </div>
       ) : (
-        <div>sorry, not found!</div>
+        <div>not found!</div>
       )}
     </div>
   );
@@ -38,4 +38,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps)(NoteView);
+export default connect(mapStateToProps)(NoteEditView);

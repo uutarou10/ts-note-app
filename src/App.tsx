@@ -5,6 +5,7 @@ import NoteList from './components/NoteList';
 import Note from './model/note';
 import { RootState } from './module';
 import { fetchItemsRequest } from './module/notes';
+import NoteEditView from './screens/NoteEditView';
 import NoteView from './screens/NoteView';
 
 interface PropTypes {
@@ -27,7 +28,8 @@ class App extends React.Component<PropTypes> {
           </div>
           <div>
             <Route exact={true} path='/' component={IndexComponent} />
-            <Route path='/notes/:id' component={NoteView} />
+            <Route exact={true} path='/notes/:id' component={NoteView} />
+            <Route path='/notes/:id/edit' component={NoteEditView} />
           </div>
         </div>
       </Router>
