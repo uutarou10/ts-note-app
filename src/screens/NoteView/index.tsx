@@ -34,7 +34,7 @@ const NoteView: React.SFC<PropTypes> = (props) => {
             onClick={onDeleteHandler(props.dispatch, selectedNote)}
           >Delete</Button>
           <Divider />
-          <p>{selectedNote.body}</p>
+          <div dangerouslySetInnerHTML={{__html: selectedNote.body.replace(/\n/, '<br />')}} />
         </div>
       ) : (
         <div>sorry, not found!</div>
