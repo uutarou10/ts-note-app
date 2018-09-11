@@ -11,7 +11,8 @@ interface PropTypes {
       id: string
     }
   },
-  dispatch: (action :any) => any
+  dispatch: (action :any) => any,
+  isSaving: boolean
 }
 
 interface StateTypes {
@@ -55,7 +56,10 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
               value={this.state.draftBody}
               onChange={this.onBodyChangeHandler}
             />
-            <button onClick={this.saveHandler}>save</button>
+            <button
+              onClick={this.saveHandler}
+              disabled={this.props.isSaving}
+            >Save</button>
             <button>delete this note</button>
           </div>
         ) : (
@@ -104,7 +108,8 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    notes: state.notes.items
+    notes: state.notes.items,
+    isSaving: state.notes.isSaving
   };
 };
 
