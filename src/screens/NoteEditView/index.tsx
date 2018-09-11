@@ -53,10 +53,14 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
               type='text'
               value={this.state.draftTitle}
               onChange={this.onTitleChangeHandler}
+              disabled={this.props.isRequesting}
             />
             <TextArea
               value={this.state.draftBody}
               onChange={this.onBodyChangeHandler}
+              disabled={this.props.isRequesting}
+              autoHeight={true}
+              rows={10}
             />
             <Button
               onClick={this.saveHandler}
