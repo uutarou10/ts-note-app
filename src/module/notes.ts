@@ -48,13 +48,13 @@ export const saveNote = (id: string, title: string, body: string) => {
 interface StateType {
   items: Note[],
   isFetching: boolean,
-  isSaving: boolean
+  isRequesting: boolean
 }
 
 const defaultState: StateType = {
   items: [],
   isFetching: false,
-  isSaving: false
+  isRequesting: false
 }
 
 type Actions = ActionType<
@@ -81,13 +81,13 @@ export default (state: StateType = defaultState, action: Actions): StateType => 
     case ActionTypes.START_SAVE:
       return {
         ...state,
-        isSaving: true
+        isRequesting: true
       };
 
     case ActionTypes.SAVE_SUCCESS:
       return {
         ...state,
-        isSaving: false,
+        isRequesting: false,
         items: state.items.map(item => item.id === action.payload.id ? action.payload : item)
       };
 

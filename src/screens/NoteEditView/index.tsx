@@ -12,7 +12,7 @@ interface PropTypes {
     }
   },
   dispatch: (action :any) => any,
-  isSaving: boolean
+  isRequesting: boolean
 }
 
 interface StateTypes {
@@ -58,9 +58,11 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
             />
             <button
               onClick={this.saveHandler}
-              disabled={this.props.isSaving}
+              disabled={this.props.isRequesting}
             >Save</button>
-            <button>delete this note</button>
+            <button
+              disabled={this.props.isRequesting}
+            >delete this note</button>
           </div>
         ) : (
           <div>not found!</div>
@@ -109,7 +111,7 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
 const mapStateToProps = (state: RootState) => {
   return {
     notes: state.notes.items,
-    isSaving: state.notes.isSaving
+    isRequesting: state.notes.isRequesting
   };
 };
 
