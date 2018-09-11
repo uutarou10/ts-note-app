@@ -13,7 +13,7 @@ const ListItem: React.SFC<PropTypes> = ({ note }) => {
       <List.Icon name='file' size='large' verticalAlign='middle' />
       <List.Content>
         <Link to={`/notes/${note.id}`} className='header'>{note.title}</Link>
-        <List.Description as='a'>{note.body}</List.Description>
+        <List.Description>{note.body}</List.Description>
       </List.Content>
     </List.Item>
   );
