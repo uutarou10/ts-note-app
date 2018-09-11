@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import { ActionType, createAction } from 'typesafe-actions';
 import Note from '../model/note';
@@ -7,8 +8,9 @@ enum ActionTypes {
   ADD_ITEMS = 'ADD_ITEMS',
   FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS',
   START_FETCH = 'START_FETCH',
-  START_SAVE = 'START_SAVE',
-  SAVE_SUCCESS = 'SAVE_SUCCESS'
+  START_REQEUST = 'START_REQEUST',
+  SAVE_SUCCESS = 'SAVE_SUCCESS',
+  DELETE_SUCCESS = 'DELETE_SUCCESS'
 }
 
 export const fetchItemsRequest = () => {
@@ -27,7 +29,7 @@ const startFetch = createAction(ActionTypes.START_FETCH, resolve => {
   return () => resolve()
 });
 
-const startSave = createAction(ActionTypes.START_SAVE, resolve => {
+const startRequest = createAction(ActionTypes.START_REQEUST, resolve => {
   return () => resolve()
 });
 
@@ -37,11 +39,25 @@ const saveSuccess = createAction(ActionTypes.SAVE_SUCCESS, resolve => {
 
 export const saveNote = (id: string, title: string, body: string) => {
   return async (dispatch: Dispatch) => {
-    dispatch(startSave());
+    dispatch(startRequest());
     const updatedNote = await storage.note.update(id, title, body);
     dispatch(saveSuccess(updatedNote));
   };
 };
+
+const deleteSuccess = createAction(ActionTypes.DELETE_SUCCESS, resolve => {
+  return (id: string) => resolve(id);
+});
+
+export const deleteNote = (note: Note) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(startRequest());
+    await storage.note.delete(note);
+    dispatch(deleteSuccess(note.id));
+    alert('Deleted!')
+    dispatch(push('/'));
+  };
+}
 
 /* Reducer */
 
@@ -60,8 +76,9 @@ const defaultState: StateType = {
 type Actions = ActionType<
   typeof fetchItemsSuccess |
   typeof startFetch |
-  typeof startSave |
-  typeof saveSuccess
+  typeof startRequest |
+  typeof saveSuccess |
+  typeof deleteSuccess
 >
 
 export default (state: StateType = defaultState, action: Actions): StateType => {
@@ -78,7 +95,7 @@ export default (state: StateType = defaultState, action: Actions): StateType => 
         isFetching: false
       };
 
-    case ActionTypes.START_SAVE:
+    case ActionTypes.START_REQEUST:
       return {
         ...state,
         isRequesting: true
@@ -89,6 +106,13 @@ export default (state: StateType = defaultState, action: Actions): StateType => 
         ...state,
         isRequesting: false,
         items: state.items.map(item => item.id === action.payload.id ? action.payload : item)
+      };
+
+    case ActionTypes.DELETE_SUCCESS:
+      return {
+        ...state,
+        isRequesting: false,
+        items: state.items.filter(item => item.id !== action.payload)
       };
 
     default:

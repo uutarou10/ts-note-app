@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import Note from '../../model/note';
 import { RootState } from '../../module';
-import { saveNote } from '../../module/notes';
+import { deleteNote, saveNote } from '../../module/notes';
 
 interface PropTypes {
   notes: Note[],
@@ -61,6 +61,7 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
               disabled={this.props.isRequesting}
             >Save</button>
             <button
+              onClick={this.deleteHandler}
               disabled={this.props.isRequesting}
             >delete this note</button>
           </div>
@@ -73,6 +74,13 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
 
   private saveHandler = () => {
     this.props.dispatch(saveNote(this.state.noteId, this.state.draftTitle, this.state.draftBody));
+  }
+
+  private deleteHandler = () => {
+    const selectedNote = this.getSelectedNote();
+    if (selectedNote) {
+      this.props.dispatch(deleteNote(selectedNote));
+    }
   }
 
   private onTitleChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
