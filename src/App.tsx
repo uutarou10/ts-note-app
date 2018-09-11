@@ -1,12 +1,14 @@
+import { ConnectedRouter as Router } from 'connected-react-router';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import NoteList from './components/NoteList';
 import Note from './model/note';
 import { RootState } from './module';
 import { fetchItemsRequest } from './module/notes';
 import NoteEditView from './screens/NoteEditView';
 import NoteView from './screens/NoteView';
+import { history } from './store';
 
 interface PropTypes {
   dispatch: (action: any) => any,
@@ -21,7 +23,7 @@ class App extends React.Component<PropTypes> {
 
   public render() {
     return (
-      <Router>
+      <Router history={history}>
         <div>
           <div>
             {this.props.isFetching ? <p>Loading...</p> : <NoteList notes={this.props.notes} />}
