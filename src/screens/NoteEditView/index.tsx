@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Button, Input, TextArea } from 'semantic-ui-react';
 import Note from '../../model/note';
 import { RootState } from '../../module';
 import { deleteNote, saveNote } from '../../module/notes';
@@ -46,24 +47,26 @@ class NoteEditView extends React.Component<PropTypes, StateTypes> {
     return (
       <div>
         {selectedNote ? (
-          <div>
-            <input
+          <div className='ui form'>
+            <Input
+              fluid={true}
               type='text'
               value={this.state.draftTitle}
               onChange={this.onTitleChangeHandler}
             />
-            <textarea
+            <TextArea
               value={this.state.draftBody}
               onChange={this.onBodyChangeHandler}
             />
-            <button
+            <Button
               onClick={this.saveHandler}
               disabled={this.props.isRequesting}
-            >Save</button>
-            <button
+            >Save</Button>
+            <Button
+              color='red'
               onClick={this.deleteHandler}
               disabled={this.props.isRequesting}
-            >delete this note</button>
+            >delete this note</Button>
           </div>
         ) : (
           <div>not found!</div>
