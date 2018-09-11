@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button, Divider } from 'semantic-ui-react';
 import Note from '../../model/note';
 import { RootState } from '../../module';
+import { deleteNote } from '../../module/notes';
 
 interface PropTypes {
   match: {
@@ -10,7 +12,8 @@ interface PropTypes {
       id: string
     }
   },
-  notes: Note[]
+  notes: Note[],
+  dispatch: (action: any) => any
 }
 
 const NoteView: React.SFC<PropTypes> = (props) => {
@@ -22,7 +25,15 @@ const NoteView: React.SFC<PropTypes> = (props) => {
       {selectedNote ? (
         <div>
           <h2>{selectedNote.title}</h2>
-          <Link to={`/notes/${selectedNote.id}/edit`}>Edit</Link>
+          <Link
+            to={`/notes/${selectedNote.id}/edit`}
+            className='ui button'
+          >Edit</Link>
+          <Button
+            color='red'
+            onClick={onDeleteHandler(props.dispatch, selectedNote)}
+          >Delete</Button>
+          <Divider />
           <p>{selectedNote.body}</p>
         </div>
       ) : (
@@ -30,6 +41,12 @@ const NoteView: React.SFC<PropTypes> = (props) => {
       )}
     </div>
   );
+};
+
+const onDeleteHandler = (dispatch: any, note: Note) => {
+  return () => {
+    dispatch(deleteNote(note));
+  };
 };
 
 const mapStateToProps = (state: RootState) => {
