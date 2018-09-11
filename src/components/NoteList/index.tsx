@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { List } from 'semantic-ui-react';
 import Note from '../../model/note';
+import ListItem from './ListItem';
 
 interface PropTypes {
   notes: Note[]
@@ -9,14 +10,11 @@ interface PropTypes {
 const NoteList: React.SFC<PropTypes> = ({ notes }) => {
   return (
     <div>
-      <ul>
+      <List divided={true} relaxed={true}>
         {notes.map(note => (
-          <li key={note.id}>
-            <Link to={`/notes/${note.id}`}>{note.title}</Link><br />
-            {note.body}
-          </li>
+          <ListItem key={note.id} note={note} />
         ))}
-      </ul>
+      </List>
     </div>
   );
 };
