@@ -41,14 +41,14 @@ export default {
     );
   },
 
-  update: async (note: Note): Promise<Note> => {
-    await notesCollectionRef.doc(note.id).update({
-      title: note.title,
-      body: note.body,
+  update: async (id: string, title: string, body: string): Promise<Note> => {
+    await notesCollectionRef.doc(id).update({
+      title,
+      body,
       updatedAt: firestore.FieldValue.serverTimestamp()
     });
 
-    const snapshot = await notesCollectionRef.doc(note.id).get();
+    const snapshot = await notesCollectionRef.doc(id).get();
     const data = snapshot.data() as firestore.DocumentData;
     return new Note(
       snapshot.id,
