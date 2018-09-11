@@ -3,6 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { Grid, Loader } from 'semantic-ui-react';
+import CreateNewNote from './components/CreateNewNote';
 import NoteList from './components/NoteList';
 import Note from './model/note';
 import { RootState } from './module';
@@ -28,7 +29,11 @@ class App extends React.Component<PropTypes> {
         <Grid columns={2} divided={true}>
           <Grid.Row>
             <Grid.Column width={4}>
-              {this.props.isFetching ? <Loader active={true} inline='centered'>Loading...</Loader> : <NoteList notes={this.props.notes} />}
+              <CreateNewNote />
+              
+              <div>
+                {this.props.isFetching ? <Loader active={true} inline='centered'>Loading...</Loader> : <NoteList notes={this.props.notes} />}
+              </div>
             </Grid.Column>
             <Grid.Column width={12}>
               <Route exact={true} path='/' component={IndexComponent} />

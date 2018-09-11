@@ -10,6 +10,7 @@ enum ActionTypes {
   START_FETCH = 'START_FETCH',
   START_REQEUST = 'START_REQEUST',
   SAVE_SUCCESS = 'SAVE_SUCCESS',
+  CREATE_SUCCESS = 'CREATE_SUCCESS',
   DELETE_SUCCESS = 'DELETE_SUCCESS'
 }
 
@@ -57,7 +58,20 @@ export const deleteNote = (note: Note) => {
     alert('Deleted!')
     dispatch(push('/'));
   };
-}
+};
+
+const createSuccess = createAction(ActionTypes.CREATE_SUCCESS, resolve => {
+  return (createdNote: Note) => resolve(createdNote);
+});
+
+export const createNote = (title: string) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(startRequest());
+    const newNote = await storage.note.create(title);
+    dispatch(createSuccess(newNote));
+    dispatch(push(`/notes/${newNote.id}/edit`));
+  };
+};
 
 /* Reducer */
 
@@ -78,7 +92,8 @@ type Actions = ActionType<
   typeof startFetch |
   typeof startRequest |
   typeof saveSuccess |
-  typeof deleteSuccess
+  typeof deleteSuccess |
+  typeof createSuccess
 >
 
 export default (state: StateType = defaultState, action: Actions): StateType => {
@@ -113,6 +128,13 @@ export default (state: StateType = defaultState, action: Actions): StateType => 
         ...state,
         isRequesting: false,
         items: state.items.filter(item => item.id !== action.payload)
+      };
+    
+    case ActionTypes.CREATE_SUCCESS:
+      return {
+        ...state,
+        isRequesting: false,
+        items: [...state.items, action.payload]
       };
 
     default:
